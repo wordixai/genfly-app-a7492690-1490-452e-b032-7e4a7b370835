@@ -1,5 +1,10 @@
+"use client";
+
 import Image from "next/image";
 import { Star } from "lucide-react";
+import { motion } from "framer-motion";
+import { useInView } from "framer-motion";
+import { useRef } from "react";
 
 const testimonials = [
   {
@@ -29,38 +34,60 @@ const testimonials = [
 ];
 
 export default function Testimonials() {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount: 0.2 });
+
   return (
     <section id="testimonials" className="py-20 bg-secondary dark:bg-secondary">
-      <div className="container mx-auto px-6">
-        <div className="text-center mb-16">
+      <div className="container mx-auto px-6" ref={ref}>
+        <motion.div 
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.6 }}
+        >
           <h2 className="text-3xl md:text-4xl font-bold mb-4">What Our Customers Say</h2>
           <p className="text-lg text-gray-600 dark:text-gray-500 max-w-2xl mx-auto">
             Don't just take our word for it. Here's what our community has to say about their Brew Haven experience.
           </p>
-        </div>
+        </motion.div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {testimonials.map((testimonial) => (
-            <div 
+          {testimonials.map((testimonial, index) => (
+            <motion.div 
               key={testimonial.id} 
               className="testimonial-card bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md"
+              initial={{ opacity: 0, y: 30 }}
+              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+              transition={{ duration: 0.5, delay: index * 0.2 }}
+              whileHover={{ scale: 1.03, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" }}
             >
               <div className="flex items-center mb-6">
-                <div className="relative h-14 w-14 rounded-full overflow-hidden mr-4">
+                <motion.div 
+                  className="relative h-14 w-14 rounded-full overflow-hidden mr-4"
+                  initial={{ scale: 0.8 }}
+                  animate={isInView ? { scale: 1 } : { scale: 0.8 }}
+                  transition={{ duration: 0.3, delay: 0.1 + index * 0.2 }}
+                >
                   <Image
                     src={testimonial.avatar}
                     alt={testimonial.name}
                     fill
                     className="object-cover"
                   />
-                </div>
+                </motion.div>
                 <div>
                   <h3 className="text-lg font-bold">{testimonial.name}</h3>
                   <p className="text-gray-600 dark:text-gray-400 text-sm">{testimonial.role}</p>
                 </div>
               </div>
               
-              <div className="flex mb-4">
+              <motion.div 
+                className="flex mb-4"
+                initial={{ opacity: 0 }}
+                animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 + index * 0.2 }}
+              >
                 {[...Array(5)].map((_, i) => (
                   <Star 
                     key={i} 
@@ -69,10 +96,17 @@ export default function Testimonials() {
                     }`} 
                   />
                 ))}
-              </div>
+              </motion.div>
               
-              <p className="text-gray-700 dark:text-gray-300 italic">"{testimonial.quote}"</p>
-            </div>
+              <motion.p 
+                className="text-gray-700 dark:text-gray-300 italic"
+                initial={{ opacity: 0 }}
+                animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+                transition={{ duration: 0.5, delay: 0.3 + index * 0.2 }}
+              >
+                "{testimonial.quote}"
+              </motion.p>
+            </motion.div>
           ))}
         </div>
       </div>

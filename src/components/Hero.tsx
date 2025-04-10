@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 export default function Hero() {
   return (
@@ -16,13 +19,28 @@ export default function Hero() {
       
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-3xl">
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6">
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6"
+          >
             Experience Coffee <span className="text-accent">Reimagined</span>
-          </h1>
-          <p className="text-xl md:text-2xl text-gray-200 mb-8">
+          </motion.h1>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-xl md:text-2xl text-gray-200 mb-8"
+          >
             Where tradition meets innovation in every cup. Discover our artisanal brews and cozy atmosphere.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4">
+          </motion.p>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="flex flex-col sm:flex-row gap-4"
+          >
             <Link 
               href="#menu" 
               className="btn-primary px-8 py-3 rounded-md text-lg font-medium inline-block text-center"
@@ -35,7 +53,7 @@ export default function Hero() {
             >
               Reserve a Table
             </Link>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

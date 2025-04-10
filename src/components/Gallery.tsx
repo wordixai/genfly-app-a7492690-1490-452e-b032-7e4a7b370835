@@ -1,4 +1,9 @@
+"use client";
+
 import Image from "next/image";
+import { motion } from "framer-motion";
+import { useInView } from "framer-motion";
+import { useRef } from "react";
 
 const galleryImages = [
   {
@@ -29,23 +34,35 @@ const galleryImages = [
 ];
 
 export default function Gallery() {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount: 0.2 });
+
   return (
     <section id="gallery" className="py-20 bg-white dark:bg-gray-900">
-      <div className="container mx-auto px-6">
-        <div className="text-center mb-16">
+      <div className="container mx-auto px-6" ref={ref}>
+        <motion.div 
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.6 }}
+        >
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Gallery</h2>
           <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
             Glimpses of our space, our craft, and the experiences we create.
           </p>
-        </div>
+        </motion.div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {galleryImages.map((image, index) => (
-            <div 
+            <motion.div 
               key={image.id} 
               className={`relative overflow-hidden rounded-lg shadow-lg ${
                 index === 0 ? 'md:col-span-2 md:row-span-2' : ''
               }`}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              whileHover={{ scale: 1.03 }}
             >
               <div className={`relative ${index === 0 ? 'h-[500px]' : 'h-80'} w-full`}>
                 <Image
@@ -54,19 +71,33 @@ export default function Gallery() {
                   fill
                   className="object-cover transition-transform duration-500 hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-black bg-opacity-20 opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                <motion.div 
+                  className="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center"
+                  initial={{ opacity: 0 }}
+                  whileHover={{ opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                >
                   <span className="text-white text-lg font-medium">{image.alt}</span>
-                </div>
+                </motion.div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
         
-        <div className="text-center mt-12">
-          <button className="btn-primary px-8 py-3 rounded-md text-lg font-medium">
+        <motion.div 
+          className="text-center mt-12"
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+          transition={{ duration: 0.6, delay: 0.6 }}
+        >
+          <motion.button 
+            className="btn-primary px-8 py-3 rounded-md text-lg font-medium"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
             View More Photos
-          </button>
-        </div>
+          </motion.button>
+        </motion.div>
       </div>
     </section>
   );
